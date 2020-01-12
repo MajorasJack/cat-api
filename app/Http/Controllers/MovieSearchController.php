@@ -16,6 +16,22 @@ class MovieSearchController extends Controller
     public function index(Request $request)
     {
         $response = (new OmdbApiClient())->get('', [
+            's' => $request->get('keyword'),
+        ]);
+
+        return response()->json([
+            'results' => $response['Search'],
+            'count' => $response['totalResults'],
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function show(Request $request)
+    {
+        $response = (new OmdbApiClient())->get('', [
             'i' => $request->get('id'),
         ]);
 

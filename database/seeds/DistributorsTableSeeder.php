@@ -33,7 +33,7 @@ class DistributorsTableSeeder extends Seeder
         ]);
 
         Distributor::create([
-            'title' => 'Linosgate',
+            'title' => 'Lionsgate',
         ]);
 
         Distributor::create([
