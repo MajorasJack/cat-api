@@ -16,3 +16,5 @@ use Illuminate\Http\Request;
 Route::get('/', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/search', 'OmdbController@search')->name('omdb.search');
