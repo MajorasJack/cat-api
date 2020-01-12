@@ -42,6 +42,17 @@ class MovieController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    public function show(Request $request)
+    {
+        return response()->json([
+            'movie' => Movie::findOrFail($request->get('id')),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function store(Request $request)
     {
         $response = $this->client->get('', [
