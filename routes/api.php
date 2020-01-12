@@ -18,3 +18,8 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/search', 'OmdbController@search')->name('omdb.search');
+
+Route::get('/movies', 'MovieController@index')->name('movies.index');
+Route::post('/movies/create', 'MovieController@store')->name('movies.create');
+Route::patch('/movies/update', 'MovieController@update')->name('movies.update');
+Route::delete('/movies/destroy', 'MovieController@destroy')->name('movies.destroy');
