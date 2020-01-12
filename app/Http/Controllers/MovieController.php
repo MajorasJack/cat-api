@@ -7,6 +7,7 @@ use App\Genre;
 use App\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class MovieController extends Controller
 {
@@ -17,10 +18,11 @@ class MovieController extends Controller
 
     /**
      * MovieController constructor.
+     * @param OmdbApiClient $client
      */
-    public function __construct()
+    public function __construct(OmdbApiClient $client)
     {
-        $this->client = new OmdbApiClient();
+        $this->client = $client;
     }
 
     /**
@@ -67,7 +69,7 @@ class MovieController extends Controller
                 '%s has been inserted',
                 $movie->title
            ),
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -86,6 +88,6 @@ class MovieController extends Controller
 
         return response()->json([
             'message' => 'Success, movie has been deleted!',
-        ]);
+        ], Response::HTTP_NO_CONTENT);
     }
 }
