@@ -21,6 +21,6 @@ $factory->define(Movie::class, function (Faker $faker) {
     return [
         'title' => $faker->word,
         'image' => $faker->imageUrl(),
-        'imdb_id' => $faker->numberBetween(1000, 9999),
+        'themoveiedb_id' => $faker->numberBetween(1000, 9999),
     ];
 });

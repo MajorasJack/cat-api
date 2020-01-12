@@ -4,12 +4,12 @@ namespace App\Client;
 
 use GuzzleHttp\Client as Guzzle;
 
-class OmdbApiClient extends Guzzle
+class TheMovieDbApiClient extends Guzzle
 {
     public function __construct()
     {
         parent::__construct([
-            'base_uri' => trim(config('omdb.api_url'), '/') . '/',
+            'base_uri' => trim(config('themoviedb.api_url'), '/') . '/',
         ]);
     }
 
@@ -23,7 +23,7 @@ class OmdbApiClient extends Guzzle
      */
     public function get($endpoint, $args)
     {
-        $args['apikey'] = config('omdb.api_key');
+        $args['api_key'] = config('themoviedb.api_key');
 
         $endpoint = sprintf(
             '%s?%s',
@@ -31,7 +31,7 @@ class OmdbApiClient extends Guzzle
             http_build_query($args)
         );
 
-        $response = $this::request('GET', $endpoint, $args);
+        $response = $this::request('GET', $endpoint);
 
         return json_decode((string) $response->getBody(), true);
     }

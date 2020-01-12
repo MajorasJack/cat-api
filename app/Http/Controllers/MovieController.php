@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Client\OmdbApiClient;
+use App\Client\TheMovieDbApiClient;
 use App\Genre;
 use App\Movie;
 use Illuminate\Http\Request;
@@ -12,15 +12,15 @@ use Illuminate\Http\Response;
 class MovieController extends Controller
 {
     /**
-     * @var OmdbApiClient
+     * @var TheMovieDbApiClient
      */
     public $client;
 
     /**
      * MovieController constructor.
-     * @param OmdbApiClient $client
+     * @param TheMovieDbApiClient $client
      */
-    public function __construct(OmdbApiClient $client)
+    public function __construct(TheMovieDbApiClient $client)
     {
         $this->client = $client;
     }
@@ -55,21 +55,20 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->client->get('', [
-            'i' => $request->get('imdb_id'),
-        ]);
+        $response = $this->client->get('movie/' . $request->get('themoviedb_id'), []);
 
         $movie = Movie::updateOrCreate([
-            'imdb_id' => $response['imdbID'],
+            'themoviedb_id' => $response['id'],
         ], [
-            'title' => $response['Title'],
-            'image' => $response['Poster'],
-            'imdb_id' => $response['imdbID'],
+            'title' => $response['original_title'],
+            'image' => $response['poster_path'],
+            'themoviedb_id' => $response['id'],
         ]);
 
-        foreach (explode(', ', $response['Genre']) as $item) {
+        foreach ($response['genres'] as $item) {
             $genre = Genre::firstOrCreate([
-                'title' => $item,
+                'title' => $item['name'],
+                'themoviedb_id' => $item['id'],
             ]);
 
             $movie->genres()->save($genre);
@@ -84,7 +83,7 @@ class MovieController extends Controller
      */
     public function destroy(Request $request)
     {
-        $movie = Movie::whereImdbId($request->get('imdb_id'))->first();
+        $movie = Movie::whereThemoviedbId($request->get('themoviedb_id'))->first();
 
         if ($movie) {
             $movie->genres()->detach();

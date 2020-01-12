@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Client\OmdbApiClient;
+use App\Client\TheMovieDbApiClient;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
-class MovieSearchController extends Controller
+class TheMovieDbApiController extends Controller
 {
     /**
      * @param Request $request
@@ -15,25 +15,25 @@ class MovieSearchController extends Controller
      */
     public function index(Request $request)
     {
-        $response = (new OmdbApiClient())->get('', [
-            's' => $request->get('keyword'),
+        $response = (new TheMovieDbApiClient())->get('search/movie', [
+            'query' => $request->get('keyword'),
         ]);
 
         return response()->json([
-            'results' => $response['Search'],
-            'count' => $response['totalResults'],
+            'results' => $response['results'],
+            'count' => $response['total_results'],
+            'pages' => $response['total_pages'],
+            'page' => $response['page'],
         ]);
     }
 
     /**
-     * @param Request $request
+     * @param integer $id
      * @return JsonResponse
      */
-    public function show(Request $request)
+    public function show(int $id)
     {
-        $response = (new OmdbApiClient())->get('', [
-            'i' => $request->get('id'),
-        ]);
+        $response = (new TheMovieDbApiClient())->get('movie/' . $id, []);
 
         if (isset($response['Error'])) {
             return response()->json([
