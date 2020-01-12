@@ -12,8 +12,16 @@ class OmdbTest extends TestCase
         $this->get('search?keyword=The Collector')
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
-                'results',
-                'count',
+                'results' => [
+                    [
+                        'Title',
+                        'Year',
+                        'imdbID',
+                        'Type',
+                        'Poster',
+                    ]
+                ],
+                'count'
             ]);
     }
 }
