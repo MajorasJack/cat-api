@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Movie;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
 use Tests\TestCase;
@@ -19,31 +20,16 @@ class MovieTest extends TestCase
         $this->post('/movies/create', [
             'imdb_id' => $movie['imdbID']
         ])
-            ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
-                'message' => sprintf(
-                    '%s has been inserted',
-                    $movie['Title']
-                )
-            ]);
+            ->assertStatus(Response::HTTP_CREATED);
     }
 
     public function testAMovieCanBeDeleted()
     {
-        $response = $this->get('search?keyword=Cannibal Holocaust');
+        $movie = factory(Movie::class)->make();
 
-        $movie = $response['results'][0];
-
-        $this->post('/movies/create', [
-            'imdb_id' => $movie['imdbID']
-        ]);
-
-        $this->post('/movies/destroy', [
-            'imdb_id' => $movie['imdbID'],
-        ])
-            ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
-                'message' => 'Success, movie has been deleted!',
-            ]);
+        $this->delete('/movies/destroy', [
+                'imdb_id' => $movie->imdb_id,
+            ])
+            ->assertStatus(Response::HTTP_NO_CONTENT);
     }
 }

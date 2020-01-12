@@ -64,12 +64,7 @@ class MovieController extends Controller
             $movie->genres()->save($genre);
         }
 
-        return response()->json([
-            'message' => sprintf(
-                '%s has been inserted',
-                $movie->title
-           ),
-        ], Response::HTTP_CREATED);
+        return response()->json($movie->toArray(),Response::HTTP_CREATED);
     }
 
     /**
@@ -86,8 +81,6 @@ class MovieController extends Controller
             $movie->delete();
         }
 
-        return response()->json([
-            'message' => 'Success, movie has been deleted!',
-        ], Response::HTTP_NO_CONTENT);
+        return response()->noContent();
     }
 }
