@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::get('/', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/movies', 'MovieController@index')->name('movies.index');
+Route::post('/movies/create', 'MovieController@store')->name('movies.create');
+Route::post('/movies/update', 'MovieController@update')->name('movies.update');
+Route::post('/movies/destroy', 'MovieController@destroy')->name('movies.destroy');
