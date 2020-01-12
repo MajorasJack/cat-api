@@ -19,5 +19,5 @@ Route::get('/', function (Request $request) {
 
 Route::get('/movies', 'MovieController@index')->name('movies.index');
 Route::post('/movies/create', 'MovieController@store')->name('movies.create');
-Route::post('/movies/update', 'MovieController@update')->name('movies.update');
-Route::post('/movies/destroy', 'MovieController@destroy')->name('movies.destroy');
+Route::patch('/movies/update', 'MovieController@update')->name('movies.update');
+Route::patch('/movies/destroy', 'MovieController@destroy')->name('movies.destroy');

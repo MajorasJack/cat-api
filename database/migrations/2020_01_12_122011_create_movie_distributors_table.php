@@ -14,8 +14,11 @@ class CreateMovieDistributorsTable extends Migration
     public function up()
     {
         Schema::create('movie_distributors', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->bigInteger('movie_id')->unsigned();
+            $table->bigInteger('distributor_id')->unsigned();
+
+            $table->foreign('movie_id')->references('id')->on('movies');
+            $table->foreign('distributor_id')->references('id')->on('distributors');
         });
     }
 
