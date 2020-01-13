@@ -55,7 +55,7 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->client->get('movie/' . $request->get('themoviedb_id'), []);
+        $response = $this->client->get('movie/' . $request->get('themoviedb_id'));
 
         $movie = Movie::updateOrCreate([
             'themoviedb_id' => $response['id'],

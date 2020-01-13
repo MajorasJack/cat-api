@@ -10,12 +10,26 @@ use Illuminate\Http\Response;
 class TheMovieDbApiController extends Controller
 {
     /**
+     * @var TheMovieDbApiClient
+     */
+    public $client;
+
+    /**
+     * TheMovieDbApiController constructor.
+     * @param TheMovieDbApiClient $client
+     */
+    public function __construct(TheMovieDbApiClient $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request)
     {
-        $response = (new TheMovieDbApiClient())->get('search/movie', [
+        $response = $this->client->get('search/movie', [
             'query' => $request->get('keyword'),
         ]);
 
@@ -33,7 +47,7 @@ class TheMovieDbApiController extends Controller
      */
     public function show(int $id)
     {
-        $response = (new TheMovieDbApiClient())->get('movie/' . $id, []);
+        $response = $this->client->get('movie/' . $id);
 
         if (isset($response['Error'])) {
             return response()->json([

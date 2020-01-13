@@ -21,7 +21,7 @@ class TheMovieDbApiClient extends Guzzle
      * @param  mixed $args
      * @return array
      */
-    public function get($endpoint, $args)
+    public function get($endpoint, $args = [])
     {
         $args['api_key'] = config('themoviedb.api_key');
 
