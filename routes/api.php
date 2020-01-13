@@ -17,8 +17,8 @@ Route::get('/', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/search', 'MovieSearchController@index')->name('movie.search.index');
-Route::get('/search/id', 'MovieSearchController@show')->name('movie.search.show');
+Route::get('/search', 'TheMovieDbApiController@index')->name('movie.search.index');
+Route::get('/search/{id}', 'TheMovieDbApiController@show')->name('movie.search.show');
 
 Route::get('/movies', 'MovieController@index')->name('movies.index');
 Route::get('/movies/{id}', 'MovieController@show')->name('movies.show');

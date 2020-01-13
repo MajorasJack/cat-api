@@ -18,7 +18,7 @@ class MovieTest extends TestCase
         $movie = $response['results'][0];
 
         $this->post('/movies/create', [
-            'imdb_id' => $movie['imdbID']
+            'themoviedb_id' => $movie['id'],
         ])
             ->assertStatus(Response::HTTP_CREATED);
     }
@@ -28,8 +28,8 @@ class MovieTest extends TestCase
         $movie = factory(Movie::class)->make();
 
         $this->delete('/movies/destroy', [
-                'imdb_id' => $movie->imdb_id,
-            ])
+            'themoviedb_id' => $movie->themoviedb_id,
+        ])
             ->assertStatus(Response::HTTP_NO_CONTENT);
     }
 }

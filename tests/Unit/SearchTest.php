@@ -17,63 +17,91 @@ class SearchTest extends TestCase
             ->assertJsonStructure([
                 'results' => [
                     [
-                        'Title',
-                        'Year',
-                        'imdbID',
-                        'Type',
-                        'Poster',
+                        'popularity',
+                        'id',
+                        'video',
+                        'vote_count',
+                        'vote_average',
+                        'title',
+                        'release_date',
+                        'original_language',
+                        'original_title',
+                        'genre_ids' => [],
+                        'backdrop_path',
+                        'adult',
+                        'overview',
+                        'poster_path',
                     ],
                 ],
                 'count',
             ]);
     }
 
-    public function testCanSearchApiByImdbId()
+    public function testCanSearchApiByMovieId()
     {
-        $this->get('search/id?id=tt0844479')
+        $this->get('/search/565')
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'movie' => [
-                    'Title',
-                    'Year',
-                    'Rated',
-                    'Released',
-                    'Runtime',
-                    'Genre',
-                    'Director',
-                    'Writer',
-                    'Actors',
-                    'Plot',
-                    'Language',
-                    'Country',
-                    'Awards',
-                    'Poster',
-                    'Ratings' => [
+                    'adult',
+                    'backdrop_path',
+                    'belongs_to_collection' => [
+                        'id',
+                        'name',
+                        'poster_path',
+                        'backdrop_path',
+                    ],
+                    'budget',
+                    'genres' => [
                         [
-                            'Source',
-                            'Value',
+                            'id',
+                            'name',
                         ],
                     ],
-                    'Metascore',
-                    'imdbRating',
-                    'imdbVotes',
-                    'imdbID',
-                    'Type',
-                    'DVD',
-                    'BoxOffice',
-                    'Production',
-                    'Website',
-                    'Response',
-                ],
+                    'homepage',
+                    'id',
+                    'imdb_id',
+                    'original_language',
+                    'original_title',
+                    'overview',
+                    'popularity',
+                    'poster_path',
+                    'production_companies' => [
+                        [
+                            'id',
+                            'logo_path',
+                            'name',
+                            'origin_country',
+                        ],
+                    ],
+                    'production_countries' => [
+                        [
+                            'iso_3166_1',
+                            'name',
+                        ],
+                    ],
+                    'release_date',
+                    'revenue',
+                    'runtime',
+                    'spoken_languages' => [
+                        [
+                            'iso_639_1',
+                            'name',
+                        ],
+                    ],
+                    'status',
+                    'tagline',
+                    'title',
+                    'video',
+                    'vote_average',
+                    'vote_count',
+                ]
             ]);
     }
 
     public function testIdSearchReturnsCorrectStatusWithIncorrectSearch()
     {
-        $this->get('search/id?id=t' . $this->faker->numberBetween(1000, 9999))
-            ->assertStatus(Response::HTTP_NOT_FOUND)
-            ->assertJson([
-                'error' => 'Incorrect IMDb ID.'
-            ]);
+        $this->get('/search/' . $this->faker->word)
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

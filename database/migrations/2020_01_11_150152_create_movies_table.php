@@ -17,7 +17,7 @@ class CreateMoviesTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->mediumText('image');
-            $table->string('imdb_id')->unique();
+            $table->string('themoviedb_id')->unique();
             $table->timestamps();
         });
     }
