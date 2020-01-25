@@ -18,6 +18,7 @@ class CreateMoviesTable extends Migration
             $table->string('title');
             $table->mediumText('image');
             $table->string('themoviedb_id')->unique();
+            $table->boolean('watched')->default(false);
             $table->timestamps();
         });
     }

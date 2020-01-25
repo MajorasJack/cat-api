@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Client\TheMovieDbApiClient;
 use App\Genre;
+use App\Http\Resources\MovieResource;
 use App\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 
 class MovieController extends Controller
@@ -26,32 +28,25 @@ class MovieController extends Controller
     }
 
     /**
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
-        $movies = Movie::all();
-
-        return response()->json([
-            'movies' => $movies,
-            'count' => $movies->count(),
-        ]);
+        return response()->json(MovieResource::collection(Movie::all()));
     }
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
     public function show(Request $request)
     {
-        return response()->json([
-            'movie' => Movie::findOrFail($request->get('id')),
-        ]);
+        return response()->json(new MovieResource(Movie::findOrFail($request->get('id'))));
     }
 
     /**
      * @param Request $request
-     * @return JsonResponse
+     * @return AnonymousResourceCollection
      */
     public function store(Request $request)
     {
@@ -74,7 +69,7 @@ class MovieController extends Controller
             $movie->genres()->save($genre);
         }
 
-        return response()->json($movie->toArray(),Response::HTTP_CREATED);
+        return response()->json(new MovieResource($movie), Response::HTTP_CREATED);
     }
 
     /**
