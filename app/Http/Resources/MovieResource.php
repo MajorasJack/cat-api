@@ -15,11 +15,11 @@ class MovieResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'Title' => $this->title,
-            'Image' => config('themoviedb.image_url') . $this->image,
-            'Watched' => $this->watched,
-            'Distributors' => $this->distributors()->pluck('title'),
-            'Genres' => $this->genres()->pluck('title'),
+            'title' => $this->title,
+            'image' => config('themoviedb.image_url') . $this->image,
+            'watched' => $this->watched,
+            'distributors' => $this->distributors()->pluck('title'),
+            'genres' => $this->genres()->pluck('title'),
         ];
     }
 }

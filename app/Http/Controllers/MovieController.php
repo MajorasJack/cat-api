@@ -32,7 +32,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return MovieResource::collection(Movie::all());
+        return response()->json(MovieResource::collection(Movie::all()));
     }
 
     /**
@@ -41,9 +41,7 @@ class MovieController extends Controller
      */
     public function show(Request $request)
     {
-        return response()->json([
-            'movie' => MovieResource::collection(Movie::findOrFail($request->get('id'))),
-        ]);
+        return response()->json(new MovieResource(Movie::findOrFail($request->get('id'))));
     }
 
     /**
@@ -71,7 +69,7 @@ class MovieController extends Controller
             $movie->genres()->save($genre);
         }
 
-        return MovieResource::collection($movie);
+        return response()->json(new MovieResource($movie), Response::HTTP_CREATED);
     }
 
     /**
