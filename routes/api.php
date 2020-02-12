@@ -13,15 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function (Request $request) {
-    return $request->user();
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/me', 'MeController@index')->name('me.index');
+
+    Route::get('/search', 'TheMovieDbApiController@index')->name('movie.search.index');
+    Route::get('/search/{id}', 'TheMovieDbApiController@show')->name('movie.search.show');
+
+    Route::get('/distributors', 'DistributorController@index')->name('distributors.index');
+
+    Route::resource('/movies', 'MovieController');
 });
-
-Route::get('/search', 'TheMovieDbApiController@index')->name('movie.search.index');
-Route::get('/search/{id}', 'TheMovieDbApiController@show')->name('movie.search.show');
-
-Route::get('/movies', 'MovieController@index')->name('movies.index');
-Route::get('/movies/{id}', 'MovieController@show')->name('movies.show');
-Route::post('/movies/create', 'MovieController@store')->name('movies.create');
-Route::patch('/movies/update', 'MovieController@update')->name('movies.update');
-Route::delete('/movies/destroy', 'MovieController@destroy')->name('movies.destroy');

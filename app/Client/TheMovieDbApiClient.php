@@ -23,16 +23,22 @@ class TheMovieDbApiClient extends Guzzle
      */
     public function get($endpoint, $args = [])
     {
-        $args['api_key'] = config('themoviedb.api_key');
+        return cache()->remember(
+            $endpoint . json_encode($args),
+            86400,
+            function () use ($endpoint, $args) {
+                $args['api_key'] = config('themoviedb.api_key');
 
-        $endpoint = sprintf(
-            '%s?%s',
-            $endpoint,
-            http_build_query($args)
+                $endpoint = sprintf(
+                    '%s?%s',
+                    $endpoint,
+                    http_build_query($args)
+                );
+
+                $response = $this::request('GET', $endpoint);
+
+                return json_decode((string) $response->getBody(), true);
+            }
         );
-
-        $response = $this::request('GET', $endpoint);
-
-        return json_decode((string) $response->getBody(), true);
     }
 }

@@ -60,6 +60,10 @@ class MovieController extends Controller
             'themoviedb_id' => $response['id'],
         ]);
 
+        if ($request->has('distributor')) {
+            $movie->distributors()->attach($request->get('distributor'));
+        }
+
         foreach ($response['genres'] as $item) {
             $genre = Genre::firstOrCreate([
                 'title' => $item['name'],
