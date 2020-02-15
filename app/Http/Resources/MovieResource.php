@@ -21,6 +21,7 @@ class MovieResource extends JsonResource
             'watched' => $this->watched,
             'distributors' => $this->distributors()->pluck('title'),
             'genres' => $this->genres()->pluck('title'),
+            'added' => true,
         ];
     }
 }

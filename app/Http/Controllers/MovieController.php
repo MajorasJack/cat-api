@@ -80,12 +80,13 @@ class MovieController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, int $id)
     {
-        $movie = Movie::whereThemoviedbId($request->get('themoviedb_id'))->first();
+        $movie = Movie::whereThemoviedbId($id)->first();
 
         if ($movie) {
             $movie->genres()->detach();
+            $movie->distributors()->detach();
 
             $movie->delete();
         }
