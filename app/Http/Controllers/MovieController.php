@@ -87,7 +87,6 @@ class MovieController extends Controller
         $movie->update($request->input());
 
         return response()->json(new MovieResource($movie), Response::HTTP_OK);
-
     }
 
     /**
