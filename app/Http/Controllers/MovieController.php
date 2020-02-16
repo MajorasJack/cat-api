@@ -80,6 +80,20 @@ class MovieController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    public function update(Request $request)
+    {
+        $movie = Movie::findOrFail($request->get('id'));
+
+        $movie->update($request->input());
+
+        return response()->json(new MovieResource($movie), Response::HTTP_OK);
+
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function destroy(Request $request, int $id)
     {
         $movie = Movie::whereThemoviedbId($id)->first();
