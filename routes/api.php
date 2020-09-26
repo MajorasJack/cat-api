@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,5 +22,5 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/distributors', 'DistributorController@index')->name('distributors.index');
 
-    Route::resource('/movies', 'MovieController');
+    Route::apiResource('/movies', 'MovieController');
 });

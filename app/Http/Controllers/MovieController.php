@@ -78,18 +78,37 @@ class MovieController extends Controller
 
     /**
      * @param Request $request
+     * @param Movie $movie
+     *
      * @return JsonResponse
      */
-    public function destroy(Request $request, int $id)
+    public function update(Request $request, Movie $movie)
     {
-        $movie = Movie::whereThemoviedbId($id)->first();
+        $movie->update(
+            $request->only([
+                'title',
+                'image',
+                'themoviedb_id',
+                'watched',
+            ])
+        );
 
-        if ($movie) {
-            $movie->genres()->detach();
-            $movie->distributors()->detach();
+        return response()->json(new MovieResource($movie), Response::HTTP_OK);
+    }
 
-            $movie->delete();
-        }
+    /**
+     * @param Request $request
+     * @param Movie $movie
+     *
+     * @return Response
+     * @throws \Exception
+     */
+    public function destroy(Request $request, Movie $movie)
+    {
+        $movie->genres()->detach();
+        $movie->distributors()->detach();
+
+        $movie->delete();
 
         return response()->noContent();
     }
