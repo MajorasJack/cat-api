@@ -19,7 +19,9 @@ class MovieListController extends Controller
     {
         return response()->json(
             MovieListResource::collection(
-                MovieList::whereCreatedBy(auth()->user()->getAuthIdentifier())->get()
+                ListType::whereCreatedBy(auth()->user()->getAuthIdentifier())
+                    ->with('movieList', 'movieList.movie')
+                    ->get()
             )
         );
     }
