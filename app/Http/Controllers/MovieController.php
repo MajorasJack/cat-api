@@ -105,12 +105,10 @@ class MovieController extends Controller
      */
     public function destroy(Request $request, Movie $movie)
     {
-        if ($movie) {
-            $movie->genres()->detach();
-            $movie->distributors()->detach();
+        $movie->genres()->detach();
+        $movie->distributors()->detach();
 
-            $movie->delete();
-        }
+        $movie->delete();
 
         return response()->noContent();
     }
