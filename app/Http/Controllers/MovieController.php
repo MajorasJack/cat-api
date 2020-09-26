@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Client\TheMovieDbApiClient;
-use App\Genre;
+use App\Models\Genre;
 use App\Http\Resources\MovieResource;
-use App\Movie;
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

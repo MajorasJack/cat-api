@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Movie;
+use App\Models\Movie;
 use App\Client\TheMovieDbApiClient;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;

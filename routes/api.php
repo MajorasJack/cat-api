@@ -23,4 +23,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/distributors', 'DistributorController@index')->name('distributors.index');
 
     Route::apiResource('/movies', 'MovieController');
+
+    Route::apiResource('/movie-lists', 'MovieListController');
 });

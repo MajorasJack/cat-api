@@ -2,9 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Movie;
+use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Response;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class MovieTest extends TestCase
@@ -13,23 +15,51 @@ class MovieTest extends TestCase
 
     public function testAMovieCanBeInserted()
     {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
         $response = $this->get('search?keyword=Cannibal Holocaust');
 
         $movie = $response['results'][0];
 
-        $this->post('/movies/create', [
-            'themoviedb_id' => $movie['id'],
+        $this->post('/movies', [
+            'title' => $movie['title'],
+            'image' => str_replace(config('themoviedb.image_url'), '', $movie['image']),
+            'themoviedb_id' => $movie['external_id'],
         ])
             ->assertStatus(Response::HTTP_CREATED);
     }
 
     public function testAMovieCanBeDeleted()
     {
-        $movie = factory(Movie::class)->make();
+        $user = factory(User::class)->create();
 
-        $this->delete('/movies/destroy', [
-            'themoviedb_id' => $movie->themoviedb_id,
-        ])
+        Passport::actingAs($user);
+
+        $movie = factory(Movie::class)->create();
+
+        $this->delete('/movies/' . $movie->id)
             ->assertStatus(Response::HTTP_NO_CONTENT);
+    }
+
+    public function testAMovieCanBeUpdated()
+    {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
+        $movie = factory(Movie::class)->create([
+            'watched' => false,
+        ]);
+
+        $this->put('/movies/' . $movie->id, [
+            'watched' => true,
+        ]);
+
+        $this->assertDatabaseHas('movies', [
+            'id' => $movie->id,
+            'watched' => true,
+        ]);
     }
 }
