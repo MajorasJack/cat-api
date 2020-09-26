@@ -15,6 +15,7 @@ class MovieResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'external_id' => $this->themoviedb_id,
             'title' => $this->title,
             'image' => config('themoviedb.image_url') . $this->image,
