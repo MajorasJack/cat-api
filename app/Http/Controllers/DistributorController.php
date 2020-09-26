@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Distributor;
+use App\Models\Distributor;
 use Illuminate\Http\Request;
 
 class DistributorController extends Controller

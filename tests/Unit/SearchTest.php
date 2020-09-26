@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class SearchTest extends TestCase
@@ -12,25 +14,21 @@ class SearchTest extends TestCase
 
     public function testApiCanBeAccessedAndSendsBackValidData()
     {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
         $this->get('search?keyword=The Collector')
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
                 'results' => [
                     [
-                        'popularity',
-                        'id',
-                        'video',
-                        'vote_count',
-                        'vote_average',
+                        'external_id',
                         'title',
-                        'release_date',
-                        'original_language',
-                        'original_title',
-                        'genre_ids' => [],
-                        'backdrop_path',
-                        'adult',
-                        'overview',
-                        'poster_path',
+                        'description',
+                        'image',
+                        'release_year',
+                        'added',
                     ],
                 ],
                 'count',
@@ -39,6 +37,10 @@ class SearchTest extends TestCase
 
     public function testCanSearchApiByMovieId()
     {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
         $this->get('/search/565')
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure([
@@ -95,12 +97,16 @@ class SearchTest extends TestCase
                     'video',
                     'vote_average',
                     'vote_count',
-                ]
+                ],
             ]);
     }
 
     public function testIdSearchReturnsCorrectStatusWithIncorrectSearch()
     {
+        $user = factory(User::class)->create();
+
+        Passport::actingAs($user);
+
         $this->get('/search/' . $this->faker->word)
             ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
     }

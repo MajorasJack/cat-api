@@ -2,9 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\Movie;
+use App\Models\ListType;
 use Faker\Generator as Faker;
-use Illuminate\Support\Str;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +17,9 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(Movie::class, function (Faker $faker) {
+$factory->define(ListType::class, function (Faker $faker) {
     return [
         'title' => $faker->word,
-        'image' => $faker->imageUrl(),
-        'themoviedb_id' => $faker->numberBetween(1000, 9999),
+        'created_by' => factory(User::class)->create()->id,
     ];
 });
