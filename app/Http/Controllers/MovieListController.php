@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MovieListResource;
 use App\Models\ListType;
 use App\Models\MovieList;
-useRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
