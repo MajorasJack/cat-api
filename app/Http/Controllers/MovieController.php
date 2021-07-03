@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Exception;
-use App\Client\TheMovieDbApiException;
+use App\Client\TheMovieDbApiClientException;
 
 class MovieController extends Controller
 {
@@ -38,18 +38,18 @@ class MovieController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return AnonymousResourceCollection
+     * @param Movie $movie
+     * @return JsonResponse
      */
-    public function show(Request $request)
+    public function show(Movie $movie)
     {
-        return response()->json(new MovieResource(Movie::findOrFail($request->get('id'))));
+        return response()->json(new MovieResource($movie));
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws TheMovieDbApiException
+     * @throws TheMovieDbApiClientException
      */
     public function store(Request $request)
     {

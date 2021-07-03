@@ -26,7 +26,6 @@ class MovieListFactory extends Factory
     {
         return [
             'list_type_id' => ListType::factory()->create(),
-            'movie_id' => Movie::factory()->create(),
             'created_by' => User::factory()->create(),
         ];
     }

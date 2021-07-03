@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/me', ['MeController@index'])->name('me.index');
+    Route::get('/me', 'MeController@index')->name('me.index');
 
     Route::get('/search', 'TheMovieDbApiController@index')->name('movie.search.index');
     Route::get('/search/{id}', 'TheMovieDbApiController@show')->name('movie.search.show');

@@ -25,6 +25,7 @@ class MovieFactory extends Factory
             'title' => $this->faker->word,
             'image' => $this->faker->word,
             'themoviedb_id' => $this->faker->randomNumber(5),
+            'watched' => $this->faker->boolean,
         ];
     }
 }
