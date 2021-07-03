@@ -14,7 +14,7 @@ class EanLookupControllerTest extends TestCase
      */
     public function testItCanLookupEan(int $ean, string $name)
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 
