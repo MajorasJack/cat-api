@@ -20,6 +20,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/search', 'TheMovieDbApiController@index')->name('movie.search.index');
     Route::get('/search/{id}', 'TheMovieDbApiController@show')->name('movie.search.show');
 
+    Route::get('/ean-lookup/{ean}', 'EanLookupController@show')->name('ean.lookup.show');
+
     Route::get('/distributors', 'DistributorController@index')->name('distributors.index');
 
     Route::apiResource('/movies', 'MovieController');
