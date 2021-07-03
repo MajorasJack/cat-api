@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Http\Resources\TheMovieDbApiMovieResource;
-use App\Client\TheMovieDbApiException;
+use App\Client\TheMovieDbApiClientException;
 
 class TheMovieDbApiController extends Controller
 {
@@ -29,7 +29,7 @@ class TheMovieDbApiController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws TheMovieDbApiException
+     * @throws TheMovieDbApiClientException
      */
     public function index(Request $request)
     {
@@ -55,7 +55,7 @@ class TheMovieDbApiController extends Controller
     /**
      * @param int $id
      * @return JsonResponse
-     * @throws TheMovieDbApiException
+     * @throws TheMovieDbApiClientException
      */
     public function show(int $id)
     {

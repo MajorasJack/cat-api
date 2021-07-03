@@ -17,11 +17,9 @@ class MovieListResource extends JsonResource
     {
         return [
             'title' => $this->title,
-            'movies' => MovieResource::collection(
-                $this->movieList->map(function (MovieList $list) {
-                    return $list->movie;
-                })
-            ),
+            'movies' => $this->movieList->movies ?
+                MovieResource::collection($this->movieList->movies)
+                : [],
         ];
     }
 }

@@ -21,7 +21,7 @@ class TheMovieDbApiClient extends Guzzle
      * @param string $endpoint
      * @param array $options
      * @return ResponseInterface|array
-     * @throws TheMovieDbApiException
+     * @throws TheMovieDbApiClientException
      */
     public function makeRequest(string $method, string $endpoint, array $options = [])
     {
@@ -36,7 +36,7 @@ class TheMovieDbApiClient extends Guzzle
         try {
             $response = $this->request($method, $endpoint);
         } catch (GuzzleException $exception) {
-            throw new TheMovieDbApiException($exception);
+            throw new TheMovieDbApiClientException($exception);
         }
 
         return cache()->remember(

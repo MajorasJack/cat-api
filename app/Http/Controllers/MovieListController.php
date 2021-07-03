@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MovieListResource;
 use App\Models\ListType;
+use App\Models\Movie;
 use App\Models\MovieList;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class MovieListController extends Controller
@@ -19,18 +21,16 @@ class MovieListController extends Controller
     {
         return response()->json(
             MovieListResource::collection(
-                ListType::whereCreatedBy(auth()->user()->getAuthIdentifier())
-                    ->with('movieList', 'movieList.movie')
+                ListType::with('usersMovieLists', 'usersMovieLists.movies')
+                    ->where('created_by', auth()->user()->id)
                     ->get()
             )
         );
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param Request $request
-     * @return AnonymousResourceCollection
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
@@ -39,53 +39,63 @@ class MovieListController extends Controller
             'created_by' => auth()->user()->getAuthIdentifier(),
         ]);
 
+        $movieList = MovieList::updateOrCreate([
+            'list_type_id' => $listType->id,
+            'created_by' => auth()->user()->getAuthIdentifier(),
+        ]);
+
         if ($request->has('movies')) {
             foreach ($request->input('movies') as $movie) {
-                MovieList::updateOrCreate([
-                    'list_type_id' => $listType->id,
-                    'created_by' => auth()->user()->getAuthIdentifier(),
-                    'movie_id' => $movie,
-                ]);
+                $movieList->movies()->save(Movie::find($movie));
             }
         }
 
         return response()->json(
-            new MovieListResource($listType->load('movieList', 'movieList.movie')),
+            new MovieListResource($listType->load('usersMovieLists', 'usersMovieLists.movies')),
             Response::HTTP_CREATED
         );
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param MovieList $movieList
+     * @return MovieListResource
      */
-    public function show($id)
+    public function show(MovieList $movieList)
     {
-        //
+        return new MovieListResource($movieList->load('usersMovieLists', 'usersMovieLists.movies'));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param Request $request
-     * @param MovieList $id
-     * @return \Illuminate\Http\Response
+     * @param MovieList $movieList
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, MovieList $movieList)
     {
-        //
+        $movieList->update(
+            $request->only([
+                'list_type_id',
+            ])
+        );
+
+        if ($request->has('movies')) {
+            $movieList->movies()->save($request->get('movies'));
+        }
+
+        return response()->json(
+            new MovieListResource($movieList->load('usersMovieLists', 'usersMovieLists.movies'))
+        );
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param MovieList $movieList
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, MovieList $movieList)
     {
-        //
+        $movieList->delete();
+
+        return response()->noContent();
     }
 }
