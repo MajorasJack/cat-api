@@ -69,7 +69,7 @@ class MovieController extends Controller
 
         foreach ($response['genres'] as $genre) {
             $movie->genres()->save(
-                Genre::firstOrCreate([
+                Genre::updateOrCreate([
                     'title' => $genre['name'],
                     'themoviedb_id' => $genre['id'],
                 ])
