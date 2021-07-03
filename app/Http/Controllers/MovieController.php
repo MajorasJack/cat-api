@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Exception;
+use App\Client\TheMovieDbApiException;
 
 class MovieController extends Controller
 {
@@ -46,11 +48,12 @@ class MovieController extends Controller
 
     /**
      * @param Request $request
-     * @return AnonymousResourceCollection
+     * @return JsonResponse
+     * @throws TheMovieDbApiException
      */
     public function store(Request $request)
     {
-        $response = $this->client->get('movie/' . $request->get('themoviedb_id'));
+        $response = $this->client->makeRequest('GET', "movie/{$request->get('themoviedb_id')}");
 
         $movie = Movie::updateOrCreate([
             'themoviedb_id' => $response['id'],
@@ -64,13 +67,13 @@ class MovieController extends Controller
             $movie->distributors()->attach($request->get('distributor'));
         }
 
-        foreach ($response['genres'] as $item) {
-            $genre = Genre::firstOrCreate([
-                'title' => $item['name'],
-                'themoviedb_id' => $item['id'],
-            ]);
-
-            $movie->genres()->save($genre);
+        foreach ($response['genres'] as $genre) {
+            $movie->genres()->save(
+                Genre::firstOrCreate([
+                    'title' => $genre['name'],
+                    'themoviedb_id' => $genre['id'],
+                ])
+            );
         }
 
         return response()->json(new MovieResource($movie), Response::HTTP_CREATED);
@@ -101,9 +104,9 @@ class MovieController extends Controller
      * @param Movie $movie
      *
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
-    public function destroy(Request $request, Movie $movie)
+    public function destroy(Request $request, Movie $movie): Response
     {
         $movie->genres()->detach();
         $movie->distributors()->detach();
