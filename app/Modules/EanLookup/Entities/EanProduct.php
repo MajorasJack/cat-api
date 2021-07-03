@@ -4,7 +4,7 @@ namespace App\Modules\EanLookup\Entities;
 
 use JsonSerializable;
 
-class EanProduct implements JsonSerializable
+class EanProduct
 {
     /**
      * @var string
@@ -26,14 +26,13 @@ class EanProduct implements JsonSerializable
         $this->ean = $ean;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function getName()
     {
-        return [
-            'name' => $this->name,
-            'ean' => $this->ean,
-        ];
+        return $this->name;
+    }
+
+    public function getEan()
+    {
+        return $this->ean;
     }
 }

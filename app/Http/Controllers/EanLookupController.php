@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Modules\EanLookup\Interfaces\EanLookupInterface;
+use App\Http\Resources\EanProductResource;
 use Illuminate\Http\Request;
 
 class EanLookupController extends Controller
@@ -23,6 +24,8 @@ class EanLookupController extends Controller
     {
         $product = $this->eanLookup->find($ean);
 
-        return response()->json($product);
+        return response()->json(
+            new EanProductResource($product)
+        );
     }
 }
