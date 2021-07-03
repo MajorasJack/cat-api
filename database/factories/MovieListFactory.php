@@ -1,28 +1,33 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\MovieList;
 use App\Models\ListType;
 use App\Models\Movie;
-use Faker\Generator as Faker;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class MovieListFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = MovieList::class;
 
-$factory->define(MovieList::class, function (Faker $faker) {
-    return [
-        'list_type_id' => factory(ListType::class)->create()->id,
-        'movie_id' => factory(Movie::class)->create()->id,
-        'created_by' => factory(User::class)->create()->id,
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition(): array
+    {
+        return [
+            'list_type_id' => ListType::factory()->create(),
+            'movie_id' => Movie::factory()->create(),
+            'created_by' => User::factory()->create(),
+        ];
+    }
+}

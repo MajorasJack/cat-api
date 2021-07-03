@@ -1,25 +1,30 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\ListType;
-use Faker\Generator as Faker;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class ListTypeFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = ListType::class;
 
-$factory->define(ListType::class, function (Faker $faker) {
-    return [
-        'title' => $faker->word,
-        'created_by' => factory(User::class)->create()->id,
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->word,
+            'created_by' => User::factory(),
+        ];
+    }
+}

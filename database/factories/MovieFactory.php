@@ -1,26 +1,30 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Models\Movie;
-use Faker\Generator as Faker;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class MovieFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Movie::class;
 
-$factory->define(Movie::class, function (Faker $faker) {
-    return [
-        'title' => $faker->word,
-        'image' => $faker->imageUrl(),
-        'themoviedb_id' => $faker->numberBetween(1000, 9999),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition(): array
+    {
+        return [
+            'title' => $this->faker->word,
+            'image' => $this->faker->imageUrl(),
+            'themoviedb_id' => $this->faker->randomNumber(5),
+        ];
+    }
+}
