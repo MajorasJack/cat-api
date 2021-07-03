@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use App\Http\Resources\TheMovieDbApiMovieResource;
+use App\Client\TheMovieDbApiException;
 
 class TheMovieDbApiController extends Controller
 {
@@ -28,12 +29,13 @@ class TheMovieDbApiController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws TheMovieDbApiException
      */
     public function index(Request $request)
     {
         $exclude = Movie::pluck('themoviedb_id');
 
-        $response = $this->client->get('search/movie', [
+        $response = $this->client->makeRequest('GET', 'search/movie', [
             'query' => $request->get('keyword'),
         ]);
 
@@ -51,12 +53,13 @@ class TheMovieDbApiController extends Controller
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      * @return JsonResponse
+     * @throws TheMovieDbApiException
      */
     public function show(int $id)
     {
-        $response = $this->client->get('movie/' . $id);
+        $response = $this->client->makeRequest('GET', 'movie/' . $id);
 
         if (isset($response['Error'])) {
             return response()->json([

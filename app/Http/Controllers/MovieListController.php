@@ -39,12 +39,14 @@ class MovieListController extends Controller
             'created_by' => auth()->user()->getAuthIdentifier(),
         ]);
 
-        foreach ($request->input('movies') as $movie) {
-            MovieList::updateOrCreate([
-                'list_type_id' => $listType->id,
-                'created_by' => auth()->user()->getAuthIdentifier(),
-                'movie_id' => $movie,
-            ]);
+        if ($request->has('movies')) {
+            foreach ($request->input('movies') as $movie) {
+                MovieList::updateOrCreate([
+                    'list_type_id' => $listType->id,
+                    'created_by' => auth()->user()->getAuthIdentifier(),
+                    'movie_id' => $movie,
+                ]);
+            }
         }
 
         return response()->json(

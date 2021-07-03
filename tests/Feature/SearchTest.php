@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -14,7 +14,7 @@ class SearchTest extends TestCase
 
     public function testApiCanBeAccessedAndSendsBackValidData()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 
@@ -37,7 +37,7 @@ class SearchTest extends TestCase
 
     public function testCanSearchApiByMovieId()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 
@@ -103,7 +103,7 @@ class SearchTest extends TestCase
 
     public function testIdSearchReturnsCorrectStatusWithIncorrectSearch()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 

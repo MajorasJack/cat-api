@@ -3,6 +3,11 @@
 namespace App\Client;
 
 use GuzzleHttp\Client as Guzzle;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Storage;
+use Incase\Apn\ApnException;
+use Psr\Http\Message\ResponseInterface;
 
 class TheMovieDbApiClient extends Guzzle
 {
@@ -13,30 +18,34 @@ class TheMovieDbApiClient extends Guzzle
         ]);
     }
 
+
     /**
-     * Wraps the Guzzle package's post method in order to be able to
-     * automatically attach authorization headers
-     *
+     * @param string $method
      * @param string $endpoint
-     * @param  mixed $args
-     * @return array
+     * @param array $options
+     * @return ResponseInterface|array
+     * @throws TheMovieDbApiException
      */
-    public function get($endpoint, $args = [])
+    public function makeRequest(string $method, string $endpoint, array $options = [])
     {
+        $options['api_key'] = config('themoviedb.api_key');
+
+        $endpoint = sprintf(
+            '%s?%s',
+            $endpoint,
+            http_build_query($options)
+        );
+
+        try {
+            $response = $this->request($method, $endpoint);
+        } catch (GuzzleException $exception) {
+            throw new TheMovieDbApiException($exception);
+        }
+
         return cache()->remember(
-            $endpoint . json_encode($args),
+            $endpoint . json_encode($options),
             86400,
-            function () use ($endpoint, $args) {
-                $args['api_key'] = config('themoviedb.api_key');
-
-                $endpoint = sprintf(
-                    '%s?%s',
-                    $endpoint,
-                    http_build_query($args)
-                );
-
-                $response = $this::request('GET', $endpoint);
-
+            function () use ($response) {
                 return json_decode((string) $response->getBody(), true);
             }
         );

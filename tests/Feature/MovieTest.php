@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use App\Models\Movie;
 use App\Models\User;
@@ -15,7 +15,7 @@ class MovieTest extends TestCase
 
     public function testAMovieCanBeInserted()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 
@@ -33,11 +33,11 @@ class MovieTest extends TestCase
 
     public function testAMovieCanBeDeleted()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 
-        $movie = factory(Movie::class)->create();
+        $movie = Movie::factory()->create();
 
         $this->delete('/movies/' . $movie->id)
             ->assertStatus(Response::HTTP_NO_CONTENT);
@@ -45,11 +45,11 @@ class MovieTest extends TestCase
 
     public function testAMovieCanBeUpdated()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         Passport::actingAs($user);
 
-        $movie = factory(Movie::class)->create([
+        $movie = Movie::factory()->create([
             'watched' => false,
         ]);
 
