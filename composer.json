@@ -19,7 +19,8 @@
         "laravel/ui": "^3.3",
         "phpspec/prophecy": "^1.13",
         "fabpot/goutte": "^4.0",
-        "spatie/phpunit-watcher": "^1.23"
+        "spatie/phpunit-watcher": "^1.23",
+        "lcobucci/jwt": "3.3.3"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
