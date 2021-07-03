@@ -3,10 +3,7 @@
 namespace App\Client;
 
 use GuzzleHttp\Client as Guzzle;
-use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Storage;
-use Incase\Apn\ApnException;
 use Psr\Http\Message\ResponseInterface;
 
 class TheMovieDbApiClient extends Guzzle
